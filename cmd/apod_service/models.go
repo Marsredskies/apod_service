@@ -10,4 +10,5 @@ type ImageData struct {
 	Copyright   string `json:"copyright" db:"copyright"`
 	Explanation string `json:"explanation" db:"explanation"`
 	RAW         []byte `json:"raw" db:"raw_image"`
+	Extension   string `db:"extension"`
 }

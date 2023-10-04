@@ -11,8 +11,8 @@ const (
 
 	SAVE_IMAGE = `
 	INSERT INTO images
-			(date, title, url, hd_url, thumb_url, media_type, copyright, explanation, raw_image) 
- 		VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+			(date, title, url, hd_url, thumb_url, media_type, copyright, explanation, raw_image, extension) 
+ 		VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 
 	DROP = `DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public`
 )
