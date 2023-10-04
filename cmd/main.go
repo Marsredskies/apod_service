@@ -14,16 +14,12 @@ import (
 	"github.com/Marsredskies/apod_service/envconfig"
 )
 
-//import "github.com/kelseyhightower/envconfig"
-
 func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
 	defer cancel()
 
 	env := envconfig.MustGetConfig()
-	log.Println("env_parsed")
 	dbClient := database.RequireNewDBClient(ctx, env.DB)
-	log.Println("db_client_initialized")
 
 	nasa := nasa.MustInitClient(env.APOD, dbClient)
 	go nasa.DoJobFetchAndSaveImages()
