@@ -11,12 +11,14 @@ import (
 // Could've been implemented better, yep.
 func (n *NasaClient) DoJobFetchAndSaveImages() {
 	for {
-		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 		defer cancel()
 
-		latest, err := n.db.GetByDate(ctx, time.Now().Format(dateFormat))
+		now := time.Now().UTC()
+
+		latest, err := n.db.GetByDate(ctx, now.Format(dateFormat))
 		if err == nil && latest == nil {
-			err = n.FetchAndSaveAPOD(ctx, time.Now())
+			err = n.FetchAndSaveAPOD(ctx, now.UTC())
 			if err != nil {
 				log.Printf("image fetch failed: %v ", err)
 				time.Sleep(1 * time.Hour)

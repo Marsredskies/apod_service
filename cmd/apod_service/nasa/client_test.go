@@ -7,6 +7,7 @@ import (
 
 	"github.com/Marsredskies/apod_service/cmd/apod_service/database"
 	"github.com/Marsredskies/apod_service/envconfig"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -48,4 +49,34 @@ func TestSaveImage(t *testing.T) {
 	imgs, err := n.db.GetAll(ctx)
 	require.NoError(t, err)
 	require.NotEqual(t, 0, len(imgs))
+}
+
+func TestGetExtension(t *testing.T) {
+	n := NasaClient{}
+	testCases := []struct {
+		url         string
+		expectedExt string
+		expectedErr bool
+	}{
+		{
+			url:         "https://test.domain.com/library/image.jpg?width=400&height=700",
+			expectedExt: "jpg",
+			expectedErr: false,
+		}, {
+			url:         "https://example.com/nothing",
+			expectedErr: true,
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.url, func(t *testing.T) {
+			ext, err := n.GetFileExtensionFromUrl(tc.url)
+			if tc.expectedErr {
+				assert.NotNil(t, err)
+			} else {
+				assert.Nil(t, err)
+				assert.Equal(t, ext, tc.expectedExt)
+			}
+		})
+	}
 }

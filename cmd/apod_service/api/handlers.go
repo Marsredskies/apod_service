@@ -41,7 +41,7 @@ func (a *API) getImageByDate(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"error": "no images found"})
 	}
 
-	fileName := fmt.Sprintf("%s%s", imageData.Title, imageData.Extension)
+	fileName := fmt.Sprintf("%s.%s", imageData.Title, imageData.Extension)
 
 	tmpfile, err := os.CreateTemp("", fileName)
 	if err != nil {

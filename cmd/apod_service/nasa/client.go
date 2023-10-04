@@ -77,7 +77,13 @@ func (n *NasaClient) GetAPOD(ctx context.Context, date time.Time) (*apod.ImageDa
 		return nil, err
 	}
 
+	extension, err := n.GetFileExtensionFromUrl(url)
+	if err != nil {
+		return nil, err
+	}
+
 	metadata.RAW = raw
+	metadata.Extension = extension
 
 	return metadata, nil
 }
@@ -162,7 +168,7 @@ func (n *NasaClient) selectURL(img *apod.ImageData) string {
 	}
 }
 
-func GetFileExtensionFromUrl(rawUrl string) (string, error) {
+func (n *NasaClient) GetFileExtensionFromUrl(rawUrl string) (string, error) {
 	u, err := url.Parse(rawUrl)
 	if err != nil {
 		return "", err

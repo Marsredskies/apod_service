@@ -2,7 +2,7 @@ package database
 
 const (
 	GET_BY_DATE = `
-		SELECT date, title, url, hd_url, thumb_url, media_type, copyright, explanation, raw_image
+		SELECT date, title, url, hd_url, thumb_url, media_type, copyright, explanation, raw_image, extension
 			FROM public.images WHERE date = $1 AND deleted_at IS NULL LIMIT 1`
 
 	GET_ALL = `
