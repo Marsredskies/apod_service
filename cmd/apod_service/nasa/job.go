@@ -8,6 +8,7 @@ import (
 
 // Kind of a cron job restarting every day or specified interval
 // Checks if latest image exists in db before fetching
+// Could've been implemented better, yep.
 func (n *NasaClient) DoJobFetchAndSaveImages() {
 	for {
 		ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -18,6 +19,7 @@ func (n *NasaClient) DoJobFetchAndSaveImages() {
 			err = n.FetchAndSaveAPOD(ctx, time.Now())
 			if err != nil {
 				log.Printf("image fetch failed: %v ", err)
+				time.Sleep(1 * time.Hour)
 				continue
 			}
 		} else {
