@@ -12,7 +12,7 @@ services:
     ports:
       - $APOD_PG_PORT:5432
      
-  apod:
+  apod_service:
     build: ./
     ports:
       - $APOD_API_PORT:8080
