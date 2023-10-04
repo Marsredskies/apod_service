@@ -1,0 +1,23 @@
+version: '3.6'
+
+services:
+  db:
+    restart: always
+    image: postgres:14.2-alpine
+    hostname: $APOD_PG_HOST 
+    environment:
+      POSTGRES_PASSWORD: $APOD_PG_PASSWORD
+      POSTGRES_USER: $APOD_PG_USER
+      POSTGRES_DB: $APOD_PG_PASSWORD
+    ports:
+      - $APOD_PG_PORT:5432
+     
+  apod:
+    build: ./
+    ports:
+      - $APOD_API_PORT:8080
+    depends_on:
+      - db
+    env_file:
+      ./.env
+
