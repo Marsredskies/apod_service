@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Marsredskies/apod_service/cmd/apod_service/database"
+	db "github.com/Marsredskies/apod_service/cmd/apod_service/database"
 	"github.com/Marsredskies/apod_service/envconfig"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
@@ -12,7 +12,7 @@ import (
 
 type API struct {
 	echo *echo.Echo
-	db   database.Repository
+	db   db.Repository
 }
 
 func MustInitNewAPI(cnf envconfig.Database) API {
@@ -27,7 +27,7 @@ func New(cnf envconfig.Database) (API, error) {
 	e.Use(middleware.LoggerWithConfig(middleware.DefaultLoggerConfig))
 	e.Pre(middleware.RemoveTrailingSlash())
 
-	db, err := database.New(cnf)
+	db, err := db.New(cnf)
 	if err != nil {
 		return API{}, err
 	}
