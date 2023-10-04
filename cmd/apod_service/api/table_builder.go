@@ -3,7 +3,7 @@ package api
 import (
 	"fmt"
 
-	"github.com/Marsredskies/apod_service/cmd/apod"
+	"github.com/Marsredskies/apod_service/cmd/apod_service"
 )
 
 func generateHTMLTable(data []apod.ImageData) string {

@@ -3,7 +3,7 @@ package api
 import (
 	"testing"
 
-	"github.com/Marsredskies/apod_service/cmd/apod"
+	"github.com/Marsredskies/apod_service/cmd/apod_service"
 	"github.com/stretchr/testify/require"
 )
 

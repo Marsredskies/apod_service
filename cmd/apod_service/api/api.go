@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Marsredskies/apod_service/cmd/apod/database"
+	"github.com/Marsredskies/apod_service/cmd/apod_service/database"
 	"github.com/Marsredskies/apod_service/envconfig"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
