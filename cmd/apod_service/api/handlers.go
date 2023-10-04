@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"regexp"
 
 	"github.com/labstack/echo"
@@ -11,7 +12,7 @@ import (
 func (a *API) getAllImagesInfo(c echo.Context) error {
 	imagesData, err := a.db.GetAll(c.Request().Context())
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, 
+		return c.JSON(http.StatusInternalServerError,
 			fmt.Sprintf("internal error: %s", err.Error()))
 	}
 
@@ -33,13 +34,33 @@ func (a *API) getImageByDate(c echo.Context) error {
 
 	imageData, err := a.db.GetByDate(c.Request().Context(), date)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError,
-			echo.Map{"error": fmt.Sprintf("internal error: %v", err.Error())})
+		return jsonIntenalError(c, err)
 	}
 
 	if imageData == nil {
 		return c.JSON(http.StatusNotFound, echo.Map{"error": "no images found"})
 	}
 
-	return c.Blob(http.StatusOK, "multipart/form-data", imageData.RAW)
+	fileName := fmt.Sprintf("%s%s", imageData.Title, imageData.Extension)
+
+	tmpfile, err := os.CreateTemp("", fileName)
+	if err != nil {
+		return jsonIntenalError(c, err)
+	}
+	defer os.Remove(tmpfile.Name())
+
+	_, err = tmpfile.Write(imageData.RAW)
+	if err != nil {
+		return jsonIntenalError(c, err)
+	}
+
+	c.Response().Header().Set(echo.HeaderContentType, http.DetectContentType(imageData.RAW))
+	c.Response().Header().Set(echo.HeaderContentDisposition, fmt.Sprintf("attachment; filename=%s", fileName))
+
+	return c.File(tmpfile.Name())
+}
+
+func jsonIntenalError(c echo.Context, err error) error {
+	return c.JSON(http.StatusInternalServerError,
+		fmt.Sprintf("internal error: %s", err.Error()))
 }
