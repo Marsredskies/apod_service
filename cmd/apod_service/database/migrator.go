@@ -94,7 +94,7 @@ func ExtractPqError(err error) *pq.Error {
 }
 
 func DropMigrations(db *sqlx.DB) {
-	_, err := db.Exec(`DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public`)
+	_, err := db.Exec(DROP)
 	if err != nil {
 		panic(fmt.Errorf("couldn't drop migrations: %v", err))
 	}
