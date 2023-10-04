@@ -21,6 +21,8 @@ func main() {
 	env := envconfig.MustGetConfig()
 	dbClient := database.RequireNewDBClient(ctx, env.DB)
 
+	database.MustApplyMigrations(ctx, env.DB)
+
 	nasa := nasa.MustInitClient(env.APOD, dbClient)
 	go nasa.DoJobFetchAndSaveImages()
 
