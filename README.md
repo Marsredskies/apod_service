@@ -1,8 +1,8 @@
-# NASA Picture Of The Day Downloader
+# NASA's Picture Of The Day Downloader
 
 A service that fetches a picture of the day from NASA's API with an ability to get an image by date and info about all images stored.
 
-# Getting started
+# Usage
 
 - Create a `.env` file in the repo directory using env.example. Make sure you've set all the variables. Even tho the app itself has it's own default values in case of missing envs, docker-compose however needs all required values.
 
