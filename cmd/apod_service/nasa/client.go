@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	apod "github.com/Marsredskies/apod_service/cmd/apod_service"
@@ -109,6 +110,10 @@ func (n *NasaClient) getMetadata(ctx context.Context, u string) (*apod.ImageData
 		return nil, err
 	}
 
+	if resp.StatusCode == statusRateLimit {
+		return nil, errors.New("rate limit excceeded")
+	}
+
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
@@ -155,4 +160,16 @@ func (n *NasaClient) selectURL(img *apod.ImageData) string {
 	default:
 		return ""
 	}
+}
+
+func GetFileExtensionFromUrl(rawUrl string) (string, error) {
+	u, err := url.Parse(rawUrl)
+	if err != nil {
+		return "", err
+	}
+	pos := strings.LastIndex(u.Path, ".")
+	if pos == -1 {
+		return "", errors.New("couldn't find a period to indicate a file extension")
+	}
+	return u.Path[pos+1 : len(u.Path)], nil
 }
