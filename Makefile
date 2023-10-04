@@ -1,5 +1,5 @@
 run:
-	docker-compose --env-file ./.env up
+	docker-compose --env-file ./.env up --build
 
 stop:
 	docker-compose down
