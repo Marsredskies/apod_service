@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Marsredskies/apod_service/cmd/apod_service"
+	apod "github.com/Marsredskies/apod_service/cmd/apod_service"
 	"github.com/Marsredskies/apod_service/cmd/apod_service/database"
 	"github.com/Marsredskies/apod_service/envconfig"
 )
@@ -23,11 +23,6 @@ type NasaClient struct {
 	}
 	fetchIntervalHours int
 	db                 *database.DB
-}
-
-type Response struct {
-	Message string   `json:"message"`
-	Urls    []string `json:"urls"`
 }
 
 func MustInitClient(config envconfig.Apod, db *database.DB) *NasaClient {
