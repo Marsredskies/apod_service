@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	env := envconfig.MustGetConfig()
@@ -31,7 +31,12 @@ func main() {
 	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
 	<-exit
 
-	err := api.Shutdown(ctx)
+	ctxShutDown, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer func() {
+		cancel()
+	}()
+
+	err := api.Shutdown(ctxShutDown)
 	if err != nil {
 		log.Printf("failed to shutdown the server: %v", err)
 	}
